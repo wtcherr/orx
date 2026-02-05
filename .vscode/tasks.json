@@ -22,10 +22,7 @@
       "cwd": "code/build/mac/gmake/",
       "problemMatcher": {
         "base": "$gcc",
-        "fileLocation": [
-          "relative",
-          "${workspaceFolder}/code/build/mac/gmake/"
-        ]
+        "fileLocation": ["relative", "${workspaceFolder}/code/build/mac/gmake/"]
       }
     }
   },
@@ -34,10 +31,7 @@
       "cwd": "code/build/windows/gmake/",
       "shell": {
         "executable": "cmd.exe",
-        "args": [
-          "/d",
-          "/c"
-        ]
+        "args": ["/d", "/c"]
       },
       "problemMatcher": {
         "base": "$gcc",
@@ -62,10 +56,7 @@
         "options": {
           "shell": {
             "executable": "cmd.exe",
-            "args": [
-              "/d",
-              "/c"
-            ]
+            "args": ["/d", "/c"]
           }
         }
       }
@@ -88,7 +79,7 @@
         "isDefault": true
       },
       "linux": {
-        "command": "make -j config=debug64",
+        "command": "make -j config=debug64"
       },
       "osx": {
         "command": "make -j config=debuguniv64"
@@ -127,33 +118,34 @@
     },
     {
       "label": "Build orx (web)",
-      "dependsOn": [
-        "Build orx (release)"
-      ],
+      "dependsOn": ["Build orx (release)"],
       "group": "build",
       "type": "shell",
       "command": "emmake make -j orxLIB config=releaseweb"
     },
     {
       "label": "Run bounce demo (debug)",
-      "dependsOn": [
-        "Build orx (debug)"
-      ],
+      "dependsOrder": "sequence",
+      "dependsOn": ["Build orx (debug)"],
       "group": {
         "kind": "test",
         "isDefault": true
       },
       "type": "process",
-      "command": "orxd",
+      "command": "./orxd",
+      "windows": {
+        "command": "orxd.exe"
+      },
       "options": {
-        "cwd": "${workspaceFolder}/code/bin/"
+        "cwd": "${workspaceFolder}/code/bin/",
+        "env": {
+          "LD_LIBRARY_PATH": "${workspaceFolder}/code/bin/"
+        }
       }
     },
     {
       "label": "Run bounce demo (release)",
-      "dependsOn": [
-        "Build orx (release)"
-      ],
+      "dependsOn": ["Build orx (release)"],
       "group": {
         "kind": "test",
         "isDefault": false
@@ -166,9 +158,7 @@
     },
     {
       "label": "Run bounce demo (profile)",
-      "dependsOn": [
-        "Build orx (profile)"
-      ],
+      "dependsOn": ["Build orx (profile)"],
       "group": {
         "kind": "test",
         "isDefault": false
@@ -181,3 +171,4 @@
     }
   ]
 }
+

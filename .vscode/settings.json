@@ -1,5 +1,6 @@
 {
   "files.associations": {
-    "orxAndroid.h": "c"
+    "orxAndroid.h": "c",
+    "orx.h": "c"
   }
 }

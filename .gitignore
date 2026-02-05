@@ -1,5 +1,6 @@
 **/orxBuild.h
 cache
+.cache
 code/bin
 code/build/*
 !code/build/template
