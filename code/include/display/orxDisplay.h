@@ -39,53 +39,47 @@
  * @{
  */
 
-
 #ifndef _orxDISPLAY_H_
 #define _orxDISPLAY_H_
 
 #include "orxInclude.h"
 #include "plugin/orxPluginCore.h"
 
-#include "math/orxVector.h"
 #include "math/orxOBox.h"
+#include "math/orxVector.h"
 #include "memory/orxBank.h"
 #include "utils/orxHashTable.h"
-#include "utils/orxString.h"
 #include "utils/orxLinkList.h"
-
+#include "utils/orxString.h"
 
 /** Misc defines
  */
-typedef struct __orxRGBA_t
-{
-  union
-  {
-    struct
-    {
+typedef struct __orxRGBA_t {
+  union {
+    struct {
       orxU8 u8R, u8G, u8B, u8A;
     };
 
-    orxU32  u32RGBA;
+    orxU32 u32RGBA;
   };
 
 } orxRGBA;
 
-#define orx2RGBA(R, G, B, A)        orxRGBA_Set((orxU8)(R), (orxU8)(G), (orxU8)(B), (orxU8)(A))
-#define orxRGBA_R(RGBA)             RGBA.u8R
-#define orxRGBA_G(RGBA)             RGBA.u8G
-#define orxRGBA_B(RGBA)             RGBA.u8B
-#define orxRGBA_A(RGBA)             RGBA.u8A
+#define orx2RGBA(R, G, B, A)                                                   \
+  orxRGBA_Set((orxU8)(R), (orxU8)(G), (orxU8)(B), (orxU8)(A))
+#define orxRGBA_R(RGBA) RGBA.u8R
+#define orxRGBA_G(RGBA) RGBA.u8G
+#define orxRGBA_B(RGBA) RGBA.u8B
+#define orxRGBA_A(RGBA) RGBA.u8A
 
-#define orxCOLOR_NORMALIZER         (orx2F(1.0f / 255.0f))
-#define orxCOLOR_DENORMALIZER       (orx2F(255.0f))
+#define orxCOLOR_NORMALIZER (orx2F(1.0f / 255.0f))
+#define orxCOLOR_DENORMALIZER (orx2F(255.0f))
 
-typedef struct __orxBITMAP_t        orxBITMAP;
-
+typedef struct __orxBITMAP_t orxBITMAP;
 
 /** Orientation enum
  */
-typedef enum __orxDISPLAY_ORIENTATION_t
-{
+typedef enum __orxDISPLAY_ORIENTATION_t {
   orxDISPLAY_ORIENTATION_UP = 0,
   orxDISPLAY_ORIENTATION_LEFT,
   orxDISPLAY_ORIENTATION_DOWN,
@@ -97,33 +91,29 @@ typedef enum __orxDISPLAY_ORIENTATION_t
 
 } orxDISPLAY_ORIENTATION;
 
-
 /** Vertex info structure
  */
-typedef struct __orxDISPLAY_VERTEX_t
-{
-  orxFLOAT  fX, fY;
-  orxFLOAT  fU, fV;
-  orxRGBA   stRGBA;
+typedef struct __orxDISPLAY_VERTEX_t {
+  orxFLOAT fX, fY;
+  orxFLOAT fU, fV;
+  orxRGBA stRGBA;
 
 } orxDISPLAY_VERTEX;
 
 /** Transform structure
  */
-typedef struct __orxDISPLAY_TRANSFORM_t
-{
-  orxFLOAT                fSrcX, fSrcY, fDstX, fDstY;
-  orxFLOAT                fRepeatX, fRepeatY;
-  orxFLOAT                fScaleX, fScaleY;
-  orxFLOAT                fRotation;
-  orxDISPLAY_ORIENTATION  eOrientation;
+typedef struct __orxDISPLAY_TRANSFORM_t {
+  orxFLOAT fSrcX, fSrcY, fDstX, fDstY;
+  orxFLOAT fRepeatX, fRepeatY;
+  orxFLOAT fScaleX, fScaleY;
+  orxFLOAT fRotation;
+  orxDISPLAY_ORIENTATION eOrientation;
 
 } orxDISPLAY_TRANSFORM;
 
 /** Primitive enum
  */
-typedef enum __orxDISPLAY_PRIMITIVE_t
-{
+typedef enum __orxDISPLAY_PRIMITIVE_t {
   orxDISPLAY_PRIMITIVE_POINTS = 0,
   orxDISPLAY_PRIMITIVE_LINES,
   orxDISPLAY_PRIMITIVE_LINE_LOOP,
@@ -140,48 +130,43 @@ typedef enum __orxDISPLAY_PRIMITIVE_t
 
 /** Mesh structure
  */
-typedef struct __orxDISPLAY_MESH_t
-{
-  const orxDISPLAY_VERTEX * astVertexList;
-  const orxU16 *            au16IndexList;
-  orxU32                    u32VertexNumber;
-  orxU32                    u32IndexNumber;
-  orxDISPLAY_PRIMITIVE      ePrimitive;
+typedef struct __orxDISPLAY_MESH_t {
+  const orxDISPLAY_VERTEX *astVertexList;
+  const orxU16 *au16IndexList;
+  orxU32 u32VertexNumber;
+  orxU32 u32IndexNumber;
+  orxDISPLAY_PRIMITIVE ePrimitive;
 
 } orxDISPLAY_MESH;
 
 /** Video mode structure
  */
-typedef struct __orxDISPLAY_VIDEO_MODE_t
-{
-  orxU32  u32Width, u32Height, u32Depth, u32RefreshRate;
+typedef struct __orxDISPLAY_VIDEO_MODE_t {
+  orxU32 u32Width, u32Height, u32Depth, u32RefreshRate;
   orxBOOL bFullScreen;
 
 } orxDISPLAY_VIDEO_MODE;
 
 /** Character glyph structure
  */
-typedef struct __orxCHARACTER_GLYPH_t
-{
+typedef struct __orxCHARACTER_GLYPH_t {
   orxFLOAT fX, fY, fWidth;
 
 } orxCHARACTER_GLYPH;
 
 /** Character map structure
  */
-typedef struct __orxCHARACTER_MAP_t
-{
-  orxBANK      *pstCharacterBank;
+typedef struct __orxCHARACTER_MAP_t {
+  orxBANK *pstCharacterBank;
   orxHASHTABLE *pstCharacterTable;
 
-  orxFLOAT      fCharacterHeight;
+  orxFLOAT fCharacterHeight;
 
 } orxCHARACTER_MAP;
 
 /** Bitmap smoothing enum
  */
-typedef enum __orxDISPLAY_SMOOTHING_t
-{
+typedef enum __orxDISPLAY_SMOOTHING_t {
   orxDISPLAY_SMOOTHING_DEFAULT = 0,
   orxDISPLAY_SMOOTHING_ON,
   orxDISPLAY_SMOOTHING_OFF,
@@ -194,8 +179,7 @@ typedef enum __orxDISPLAY_SMOOTHING_t
 
 /** Bitmap blend enum
  */
-typedef enum __orxDISPLAY_BLEND_MODE_t
-{
+typedef enum __orxDISPLAY_BLEND_MODE_t {
   orxDISPLAY_BLEND_MODE_ALPHA = 0,
   orxDISPLAY_BLEND_MODE_MULTIPLY,
   orxDISPLAY_BLEND_MODE_ADD,
@@ -209,67 +193,60 @@ typedef enum __orxDISPLAY_BLEND_MODE_t
 
 /** Color structure
  */
-typedef struct __orxCOLOR_t
-{
-  union
-  {
-    orxVECTOR vRGB;                                         /**< RGB components: 12 */
-    orxVECTOR vHSL;                                         /**< HSL components: 12 */
-    orxVECTOR vHSV;                                         /**< HSV components: 12 */
+typedef struct __orxCOLOR_t {
+  union {
+    orxVECTOR vRGB; /**< RGB components: 12 */
+    orxVECTOR vHSL; /**< HSL components: 12 */
+    orxVECTOR vHSV; /**< HSV components: 12 */
   };
-  orxFLOAT  fAlpha;                                         /**< Alpha component: 16 */
+  orxFLOAT fAlpha; /**< Alpha component: 16 */
 
 } orxCOLOR;
 
-
 /** Config parameters
  */
-#define orxDISPLAY_KZ_CONFIG_SECTION                        "Display"
-#define orxDISPLAY_KZ_CONFIG_WIDTH                          "ScreenWidth"
-#define orxDISPLAY_KZ_CONFIG_HEIGHT                         "ScreenHeight"
-#define orxDISPLAY_KZ_CONFIG_DEPTH                          "ScreenDepth"
-#define orxDISPLAY_KZ_CONFIG_POSITION                       "ScreenPosition"
-#define orxDISPLAY_KZ_CONFIG_REFRESH_RATE                   "RefreshRate"
-#define orxDISPLAY_KZ_CONFIG_FULLSCREEN                     "FullScreen"
-#define orxDISPLAY_KZ_CONFIG_ALLOW_RESIZE                   "AllowResize"
-#define orxDISPLAY_KZ_CONFIG_DECORATION                     "Decoration"
-#define orxDISPLAY_KZ_CONFIG_TITLE                          "Title"
-#define orxDISPLAY_KZ_CONFIG_SMOOTH                         "Smoothing"
-#define orxDISPLAY_KZ_CONFIG_VSYNC                          "VSync"
-#define orxDISPLAY_KZ_CONFIG_DEPTHBUFFER                    "DepthBuffer"
-#define orxDISPLAY_KZ_CONFIG_SHADER_VERSION                 "ShaderVersion"
-#define orxDISPLAY_KZ_CONFIG_SHADER_EXTENSION_LIST          "ShaderExtensionList"
-#define orxDISPLAY_KZ_CONFIG_MONITOR                        "Monitor"
-#define orxDISPLAY_KZ_CONFIG_CURSOR                         "Cursor"
-#define orxDISPLAY_KZ_CONFIG_ICON_LIST                      "IconList"
-#define orxDISPLAY_KZ_CONFIG_FRAMEBUFFER_SIZE               "FramebufferSize"
-#define orxDISPLAY_KZ_CONFIG_CONTENT_SCALE                  "ContentScale"
-#define orxDISPLAY_KZ_CONFIG_TEXTURE_UNIT_NUMBER            "TextureUnitNumber"
-#define orxDISPLAY_KZ_CONFIG_DRAW_BUFFER_NUMBER             "DrawBufferNumber"
-#define orxDISPLAY_KZ_CONFIG_MAX_TEXTURE_SIZE               "MaxTextureSize"
-#define orxDISPLAY_KZ_CONFIG_DEBUG_OUTPUT                   "DebugOutput"
+#define orxDISPLAY_KZ_CONFIG_SECTION "Display"
+#define orxDISPLAY_KZ_CONFIG_WIDTH "ScreenWidth"
+#define orxDISPLAY_KZ_CONFIG_HEIGHT "ScreenHeight"
+#define orxDISPLAY_KZ_CONFIG_DEPTH "ScreenDepth"
+#define orxDISPLAY_KZ_CONFIG_POSITION "ScreenPosition"
+#define orxDISPLAY_KZ_CONFIG_REFRESH_RATE "RefreshRate"
+#define orxDISPLAY_KZ_CONFIG_FULLSCREEN "FullScreen"
+#define orxDISPLAY_KZ_CONFIG_ALLOW_RESIZE "AllowResize"
+#define orxDISPLAY_KZ_CONFIG_DECORATION "Decoration"
+#define orxDISPLAY_KZ_CONFIG_TITLE "Title"
+#define orxDISPLAY_KZ_CONFIG_SMOOTH "Smoothing"
+#define orxDISPLAY_KZ_CONFIG_VSYNC "VSync"
+#define orxDISPLAY_KZ_CONFIG_DEPTHBUFFER "DepthBuffer"
+#define orxDISPLAY_KZ_CONFIG_SHADER_VERSION "ShaderVersion"
+#define orxDISPLAY_KZ_CONFIG_SHADER_EXTENSION_LIST "ShaderExtensionList"
+#define orxDISPLAY_KZ_CONFIG_MONITOR "Monitor"
+#define orxDISPLAY_KZ_CONFIG_CURSOR "Cursor"
+#define orxDISPLAY_KZ_CONFIG_ICON_LIST "IconList"
+#define orxDISPLAY_KZ_CONFIG_FRAMEBUFFER_SIZE "FramebufferSize"
+#define orxDISPLAY_KZ_CONFIG_CONTENT_SCALE "ContentScale"
+#define orxDISPLAY_KZ_CONFIG_TEXTURE_UNIT_NUMBER "TextureUnitNumber"
+#define orxDISPLAY_KZ_CONFIG_DRAW_BUFFER_NUMBER "DrawBufferNumber"
+#define orxDISPLAY_KZ_CONFIG_MAX_TEXTURE_SIZE "MaxTextureSize"
+#define orxDISPLAY_KZ_CONFIG_DEBUG_OUTPUT "DebugOutput"
 
-#define orxCOLOR_KZ_CONFIG_SECTION                          "Color"
-
+#define orxCOLOR_KZ_CONFIG_SECTION "Color"
 
 /** Shader texture suffixes
  */
-#define orxDISPLAY_KZ_SHADER_SUFFIX_TOP                     "_top"
-#define orxDISPLAY_KZ_SHADER_SUFFIX_LEFT                    "_left"
-#define orxDISPLAY_KZ_SHADER_SUFFIX_BOTTOM                  "_bottom"
-#define orxDISPLAY_KZ_SHADER_SUFFIX_RIGHT                   "_right"
-
+#define orxDISPLAY_KZ_SHADER_SUFFIX_TOP "_top"
+#define orxDISPLAY_KZ_SHADER_SUFFIX_LEFT "_left"
+#define orxDISPLAY_KZ_SHADER_SUFFIX_BOTTOM "_bottom"
+#define orxDISPLAY_KZ_SHADER_SUFFIX_RIGHT "_right"
 
 /** Shader extension actions
  */
-#define orxDISPLAY_KC_SHADER_EXTENSION_ADD                  '+'
-#define orxDISPLAY_KC_SHADER_EXTENSION_REMOVE               '-'
-
+#define orxDISPLAY_KC_SHADER_EXTENSION_ADD '+'
+#define orxDISPLAY_KC_SHADER_EXTENSION_REMOVE '-'
 
 /** Event enum
  */
-typedef enum __orxDISPLAY_EVENT_t
-{
+typedef enum __orxDISPLAY_EVENT_t {
   orxDISPLAY_EVENT_SET_VIDEO_MODE = 0,
   orxDISPLAY_EVENT_LOAD_BITMAP,
 
@@ -281,35 +258,30 @@ typedef enum __orxDISPLAY_EVENT_t
 
 /** Display event payload
  */
-typedef struct __orxDISPLAY_EVENT_PAYLOAD_t
-{
-  union
-  {
-    struct
-    {
-      orxU32  u32Width;                                     /**< Screen width : 4 */
-      orxU32  u32Height;                                    /**< Screen height : 8 */
-      orxU32  u32Depth;                                     /**< Screen depth : 12 */
-      orxU32  u32RefreshRate;                               /**< Refresh rate: 16 */
-      orxU32  u32PreviousWidth;                             /**< Previous screen width : 20 */
-      orxU32  u32PreviousHeight;                            /**< Previous screen height : 24 */
-      orxU32  u32PreviousDepth;                             /**< Previous screen depth : 28 */
-      orxU32  u32PreviousRefreshRate;                       /**< Previous refresh rate : 32 */
-      orxBOOL bFullScreen;                                  /**< FullScreen? : 36 */
+typedef struct __orxDISPLAY_EVENT_PAYLOAD_t {
+  union {
+    struct {
+      orxU32 u32Width;               /**< Screen width : 4 */
+      orxU32 u32Height;              /**< Screen height : 8 */
+      orxU32 u32Depth;               /**< Screen depth : 12 */
+      orxU32 u32RefreshRate;         /**< Refresh rate: 16 */
+      orxU32 u32PreviousWidth;       /**< Previous screen width : 20 */
+      orxU32 u32PreviousHeight;      /**< Previous screen height : 24 */
+      orxU32 u32PreviousDepth;       /**< Previous screen depth : 28 */
+      orxU32 u32PreviousRefreshRate; /**< Previous refresh rate : 32 */
+      orxBOOL bFullScreen;           /**< FullScreen? : 36 */
 
     } stVideoMode;
 
-    struct
-    {
-      const orxSTRING zLocation;                            /**< File location : 40 */
-      orxSTRINGID     stFilenameID;                         /**< File name ID : 44 */
-      orxU32          u32ID;                                /**< Bitmap (hardware texture) ID : 48 */
+    struct {
+      const orxSTRING zLocation; /**< File location : 40 */
+      orxSTRINGID stFilenameID;  /**< File name ID : 44 */
+      orxU32 u32ID;              /**< Bitmap (hardware texture) ID : 48 */
 
     } stBitmap;
   };
 
 } orxDISPLAY_EVENT_PAYLOAD;
-
 
 /***************************************************************************
  * Functions directly implemented by orx core
@@ -317,49 +289,48 @@ typedef struct __orxDISPLAY_EVENT_PAYLOAD_t
 
 #if defined(__orxIOS__) && defined(__orxOBJC__)
 
-#import <UIKit/UIKit.h>
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
 #import <OpenGLES/ES1/glext.h>
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
+#import <UIKit/UIKit.h>
 
 /** Orx view controller interface
  */
-@interface orxViewController : UIViewController
-{
+@interface orxViewController : UIViewController {
 @private
   UIInterfaceOrientation eOrientation;
 }
 
-@property                     UIInterfaceOrientation eOrientation;
+@property UIInterfaceOrientation eOrientation;
 
 @end
 
 /** Orx view interface
  */
-@interface orxView : UIView
-{
+@interface orxView : UIView {
 @private
-  EAGLContext  *poMainContext, *poThreadContext;
-  GLuint        uiRenderBuffer, uiDepthBuffer, uiScreenFrameBuffer, uiTextureFrameBuffer;
-  BOOL          bShaderSupport, bCompressedTextureSupport;
+  EAGLContext *poMainContext, *poThreadContext;
+  GLuint uiRenderBuffer, uiDepthBuffer, uiScreenFrameBuffer,
+      uiTextureFrameBuffer;
+  BOOL bShaderSupport, bCompressedTextureSupport;
 }
 
-+ (orxView *) GetInstance;
++ (orxView *)GetInstance;
 
-- (void) QueueEvent:(orxENUM)_eID WithPayload:(orxSYSTEM_EVENT_PAYLOAD *)_pstPayload;
-- (void) NotifyAcceleration:(UIAcceleration *)_poAcceleration;
+- (void)QueueEvent:(orxENUM)_eID
+       WithPayload:(orxSYSTEM_EVENT_PAYLOAD *)_pstPayload;
+- (void)NotifyAcceleration:(UIAcceleration *)_poAcceleration;
 
-@property (nonatomic, retain) EAGLContext  *poMainContext;
-@property (nonatomic, retain) EAGLContext  *poThreadContext;
-@property                     BOOL          bShaderSupport;
-@property                     BOOL          bCompressedTextureSupport;
+@property(nonatomic, retain) EAGLContext *poMainContext;
+@property(nonatomic, retain) EAGLContext *poThreadContext;
+@property BOOL bShaderSupport;
+@property BOOL bCompressedTextureSupport;
 
 @end
 
 #endif /* __orxIOS__ && __orxOBJC__ */
-
 
 /** Display module setup
  */
@@ -372,8 +343,8 @@ extern orxDLLAPI void orxFASTCALL orxDisplay_Setup();
  * @param[in]   _u8A            Alpha value to set
  * @return      orxRGBA
  */
-static orxINLINE orxRGBA          orxRGBA_Set(orxU8 _u8R, orxU8 _u8G, orxU8 _u8B, orxU8 _u8A)
-{
+static orxINLINE orxRGBA orxRGBA_Set(orxU8 _u8R, orxU8 _u8G, orxU8 _u8B,
+                                     orxU8 _u8A) {
   orxRGBA stResult;
 
   /* Updates result */
@@ -386,21 +357,23 @@ static orxINLINE orxRGBA          orxRGBA_Set(orxU8 _u8R, orxU8 _u8G, orxU8 _u8B
   return stResult;
 }
 
-
 /** Sets all components from an orxRGBA
  * @param[in]   _pstColor       Concerned color
  * @param[in]   _stRGBA         RGBA values to set
  * @return      orxCOLOR
  */
-static orxINLINE orxCOLOR *       orxColor_SetRGBA(orxCOLOR *_pstColor, orxRGBA _stRGBA)
-{
+static orxINLINE orxCOLOR *orxColor_SetRGBA(orxCOLOR *_pstColor,
+                                            orxRGBA _stRGBA) {
   orxCOLOR *pstResult = _pstColor;
 
   /* Checks */
   orxASSERT(_pstColor != orxNULL);
 
   /* Stores RGB */
-  orxVector_Set(&(_pstColor->vRGB), orxCOLOR_NORMALIZER * orxU2F(orxRGBA_R(_stRGBA)), orxCOLOR_NORMALIZER * orxU2F(orxRGBA_G(_stRGBA)), orxCOLOR_NORMALIZER * orxU2F(orxRGBA_B(_stRGBA)));
+  orxVector_Set(&(_pstColor->vRGB),
+                orxCOLOR_NORMALIZER * orxU2F(orxRGBA_R(_stRGBA)),
+                orxCOLOR_NORMALIZER * orxU2F(orxRGBA_G(_stRGBA)),
+                orxCOLOR_NORMALIZER * orxU2F(orxRGBA_B(_stRGBA)));
 
   /* Stores alpha */
   _pstColor->fAlpha = orxCOLOR_NORMALIZER * orxRGBA_A(_stRGBA);
@@ -415,8 +388,8 @@ static orxINLINE orxCOLOR *       orxColor_SetRGBA(orxCOLOR *_pstColor, orxRGBA 
  * @param[in]   _fAlpha         Normalized alpha component
  * @return      orxCOLOR
  */
-static orxINLINE orxCOLOR *       orxColor_Set(orxCOLOR *_pstColor, const orxVECTOR *_pvRGB, orxFLOAT _fAlpha)
-{
+static orxINLINE orxCOLOR *
+orxColor_Set(orxCOLOR *_pstColor, const orxVECTOR *_pvRGB, orxFLOAT _fAlpha) {
   orxCOLOR *pstResult = _pstColor;
 
   /* Checks */
@@ -437,8 +410,8 @@ static orxINLINE orxCOLOR *       orxColor_Set(orxCOLOR *_pstColor, const orxVEC
  * @param[in]   _pvRGB          RGB components
  * @return      orxCOLOR
  */
-static orxINLINE orxCOLOR *       orxColor_SetRGB(orxCOLOR *_pstColor, const orxVECTOR *_pvRGB)
-{
+static orxINLINE orxCOLOR *orxColor_SetRGB(orxCOLOR *_pstColor,
+                                           const orxVECTOR *_pvRGB) {
   orxCOLOR *pstResult = _pstColor;
 
   /* Checks */
@@ -457,8 +430,8 @@ static orxINLINE orxCOLOR *       orxColor_SetRGB(orxCOLOR *_pstColor, const orx
  * @param[in]   _fAlpha         Normalized alpha component
  * @return      orxCOLOR / orxNULL
  */
-static orxINLINE orxCOLOR *       orxColor_SetAlpha(orxCOLOR *_pstColor, orxFLOAT _fAlpha)
-{
+static orxINLINE orxCOLOR *orxColor_SetAlpha(orxCOLOR *_pstColor,
+                                             orxFLOAT _fAlpha) {
   orxCOLOR *pstResult = _pstColor;
 
   /* Checks */
@@ -475,17 +448,17 @@ static orxINLINE orxCOLOR *       orxColor_SetAlpha(orxCOLOR *_pstColor, orxFLOA
  * @param[in]   _pstColor       Concerned color
  * @return      orxRGBA
  */
-static orxINLINE orxRGBA          orxColor_ToRGBA(const orxCOLOR *_pstColor)
-{
-  orxRGBA   stResult;
+static orxINLINE orxRGBA orxColor_ToRGBA(const orxCOLOR *_pstColor) {
+  orxRGBA stResult;
   orxVECTOR vColor;
-  orxFLOAT  fAlpha;
+  orxFLOAT fAlpha;
 
   /* Checks */
   orxASSERT(_pstColor != orxNULL);
 
   /* Clamps RGB components */
-  orxVector_Clamp(&vColor, &(_pstColor->vRGB), &orxVECTOR_BLACK, &orxVECTOR_WHITE);
+  orxVector_Clamp(&vColor, &(_pstColor->vRGB), &orxVECTOR_BLACK,
+                  &orxVECTOR_WHITE);
 
   /* De-normalizes vector */
   orxVector_Mulf(&vColor, &vColor, orxCOLOR_DENORMALIZER);
@@ -494,7 +467,9 @@ static orxINLINE orxRGBA          orxColor_ToRGBA(const orxCOLOR *_pstColor)
   fAlpha = orxCLAMP(_pstColor->fAlpha, orxFLOAT_0, orxFLOAT_1);
 
   /* Updates result */
-  stResult = orx2RGBA(orxF2U(orxMath_Round(vColor.fR)), orxF2U(orxMath_Round(vColor.fG)), orxF2U(orxMath_Round(vColor.fB)), orxF2U(orxCOLOR_DENORMALIZER * fAlpha));
+  stResult = orx2RGBA(
+      orxF2U(orxMath_Round(vColor.fR)), orxF2U(orxMath_Round(vColor.fG)),
+      orxF2U(orxMath_Round(vColor.fB)), orxF2U(orxCOLOR_DENORMALIZER * fAlpha));
 
   /* Done! */
   return stResult;
@@ -505,8 +480,8 @@ static orxINLINE orxRGBA          orxColor_ToRGBA(const orxCOLOR *_pstColor)
  * @param[in]   _pstSrc         Source color
  * @return      orxCOLOR
  */
-static orxINLINE orxCOLOR *       orxColor_Copy(orxCOLOR *_pstDst, const orxCOLOR *_pstSrc)
-{
+static orxINLINE orxCOLOR *orxColor_Copy(orxCOLOR *_pstDst,
+                                         const orxCOLOR *_pstSrc) {
   /* Checks */
   orxASSERT(_pstDst != orxNULL);
   orxASSERT(_pstSrc != orxNULL);
@@ -523,10 +498,10 @@ static orxINLINE orxCOLOR *       orxColor_Copy(orxCOLOR *_pstDst, const orxCOLO
  * @param[in]   _pstSrc         Source color
  * @return      orxCOLOR
  */
-static orxCOLOR *orxFASTCALL      orxColor_FromRGBToHSL(orxCOLOR *_pstDst, const orxCOLOR *_pstSrc)
-{
+static orxCOLOR *orxFASTCALL orxColor_FromRGBToHSL(orxCOLOR *_pstDst,
+                                                   const orxCOLOR *_pstSrc) {
   orxCOLOR *pstResult = _pstDst;
-  orxFLOAT  fMin, fMax, fDelta, fR, fG, fB;
+  orxFLOAT fMin, fMax, fDelta, fR, fG, fB;
 
   /* Checks */
   orxASSERT(_pstDst != orxNULL);
@@ -538,52 +513,45 @@ static orxCOLOR *orxFASTCALL      orxColor_FromRGBToHSL(orxCOLOR *_pstDst, const
   fB = _pstSrc->vRGB.fB;
 
   /* Gets min, max & delta values */
-  fMin    = orxMIN(fR, orxMIN(fG, fB));
-  fMax    = orxMAX(fR, orxMAX(fG, fB));
-  fDelta  = fMax - fMin;
+  fMin = orxMIN(fR, orxMIN(fG, fB));
+  fMax = orxMAX(fR, orxMAX(fG, fB));
+  fDelta = fMax - fMin;
 
   /* Stores lightness */
   pstResult->vHSL.fL = orx2F(0.5f) * (fMax + fMin);
 
   /* Gray? */
-  if(fDelta == orxFLOAT_0)
-  {
+  if (fDelta == orxFLOAT_0) {
     /* Gets hue & saturation */
     pstResult->vHSL.fH = pstResult->vHSL.fS = orxFLOAT_0;
-  }
-  else
-  {
+  } else {
     /* Updates saturation */
     pstResult->vHSL.fS = (pstResult->vHSL.fL < orx2F(0.5f))
-                       ? fDelta / (fMax + fMin)
-                       : fDelta / (orx2F(2.0f) - fMax - fMin);
+                             ? fDelta / (fMax + fMin)
+                             : fDelta / (orx2F(2.0f) - fMax - fMin);
 
     /* Red tone? */
-    if(fR == fMax)
-    {
+    if (fR == fMax) {
       /* Updates hue */
       pstResult->vHSL.fH = orx2F(1.0f / 6.0f) * (fG - fB) / fDelta;
     }
     /* Green tone? */
-    else if(fG == fMax)
-    {
+    else if (fG == fMax) {
       /* Updates hue */
-      pstResult->vHSL.fH = orx2F(1.0f / 3.0f) + (orx2F(1.0f / 6.0f) * (fB - fR) / fDelta);
+      pstResult->vHSL.fH =
+          orx2F(1.0f / 3.0f) + (orx2F(1.0f / 6.0f) * (fB - fR) / fDelta);
     }
     /* Blue tone */
-    else
-    {
+    else {
       /* Updates hue */
-      pstResult->vHSL.fH = orx2F(2.0f / 3.0f) + (orx2F(1.0f / 6.0f) * (fR - fG) / fDelta);
+      pstResult->vHSL.fH =
+          orx2F(2.0f / 3.0f) + (orx2F(1.0f / 6.0f) * (fR - fG) / fDelta);
     }
 
     /* Clamps hue */
-    if(pstResult->vHSL.fH < orxFLOAT_0)
-    {
+    if (pstResult->vHSL.fH < orxFLOAT_0) {
       pstResult->vHSL.fH += orxFLOAT_1;
-    }
-    else if(pstResult->vHSL.fH > orxFLOAT_1)
-    {
+    } else if (pstResult->vHSL.fH > orxFLOAT_1) {
       pstResult->vHSL.fH -= orxFLOAT_1;
     }
   }
@@ -600,40 +568,29 @@ static orxCOLOR *orxFASTCALL      orxColor_FromRGBToHSL(orxCOLOR *_pstDst, const
  * @param[in]   _pstSrc         Source color
  * @return      orxCOLOR
  */
-static orxCOLOR *orxFASTCALL      orxColor_FromHSLToRGB(orxCOLOR *_pstDst, const orxCOLOR *_pstSrc)
-{
+static orxCOLOR *orxFASTCALL orxColor_FromHSLToRGB(orxCOLOR *_pstDst,
+                                                   const orxCOLOR *_pstSrc) {
   orxCOLOR *pstResult = _pstDst;
-  orxFLOAT  fH, fS, fL;
+  orxFLOAT fH, fS, fL;
 
-#define orxCOLOR_GET_RGB_COMPONENT(RESULT, ALT, CHROMA, HUE)                      \
-do                                                                                \
-{                                                                                 \
-  if(HUE < orx2F(1.0f / 6.0f))                                                    \
-  {                                                                               \
-    RESULT = ALT + (orx2F(6.0f) * HUE * (CHROMA - ALT));                          \
-  }                                                                               \
-  else if(HUE < orx2F(1.0f / 2.0f))                                               \
-  {                                                                               \
-    RESULT = CHROMA;                                                              \
-  }                                                                               \
-  else if(HUE < orx2F(2.0f / 3.0f))                                               \
-  {                                                                               \
-    RESULT = ALT + (orx2F(6.0f) * (CHROMA - ALT) * (orx2F(2.0f / 3.0f) - HUE));   \
-  }                                                                               \
-  else                                                                            \
-  {                                                                               \
-    RESULT = ALT;                                                                 \
-  }                                                                               \
-  if(RESULT < orxMATH_KF_EPSILON)                                                 \
-  {                                                                               \
-    RESULT = orxFLOAT_0;                                                          \
-  }                                                                               \
-  else if(RESULT > orxFLOAT_1 - orxMATH_KF_EPSILON)                               \
-  {                                                                               \
-    RESULT = orxFLOAT_1;                                                          \
-  }                                                                               \
-}                                                                                 \
-while(orxFALSE)
+#define orxCOLOR_GET_RGB_COMPONENT(RESULT, ALT, CHROMA, HUE)                   \
+  do {                                                                         \
+    if (HUE < orx2F(1.0f / 6.0f)) {                                            \
+      RESULT = ALT + (orx2F(6.0f) * HUE * (CHROMA - ALT));                     \
+    } else if (HUE < orx2F(1.0f / 2.0f)) {                                     \
+      RESULT = CHROMA;                                                         \
+    } else if (HUE < orx2F(2.0f / 3.0f)) {                                     \
+      RESULT =                                                                 \
+          ALT + (orx2F(6.0f) * (CHROMA - ALT) * (orx2F(2.0f / 3.0f) - HUE));   \
+    } else {                                                                   \
+      RESULT = ALT;                                                            \
+    }                                                                          \
+    if (RESULT < orxMATH_KF_EPSILON) {                                         \
+      RESULT = orxFLOAT_0;                                                     \
+    } else if (RESULT > orxFLOAT_1 - orxMATH_KF_EPSILON) {                     \
+      RESULT = orxFLOAT_1;                                                     \
+    }                                                                          \
+  } while (orxFALSE)
 
   /* Checks */
   orxASSERT(_pstDst != orxNULL);
@@ -645,40 +602,33 @@ while(orxFALSE)
   fL = _pstSrc->vRGB.fL;
 
   /* Gray? */
-  if(fS == orxFLOAT_0)
-  {
+  if (fS == orxFLOAT_0) {
     /* Updates result */
     orxVector_SetAll(&(pstResult->vRGB), fL);
-  }
-  else
-  {
+  } else {
     orxFLOAT fChroma, fIntermediate;
 
     /* Gets chroma */
-    fChroma = (fL < orx2F(0.5f))
-            ? fL + (fL * fS)
-            : fL + fS - (fL * fS);
+    fChroma = (fL < orx2F(0.5f)) ? fL + (fL * fS) : fL + fS - (fL * fS);
 
     /* Gets intermediate value */
     fIntermediate = (orx2F(2.0f) * fL) - fChroma;
 
     /* Gets RGB components */
-    if(fH > orx2F(2.0f / 3.0f))
-    {
-      orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fR, fIntermediate, fChroma, (fH - orx2F(2.0f / 3.0f)));
-    }
-    else
-    {
-      orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fR, fIntermediate, fChroma, (fH + orx2F(1.0f / 3.0f)));
+    if (fH > orx2F(2.0f / 3.0f)) {
+      orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fR, fIntermediate, fChroma,
+                                 (fH - orx2F(2.0f / 3.0f)));
+    } else {
+      orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fR, fIntermediate, fChroma,
+                                 (fH + orx2F(1.0f / 3.0f)));
     }
     orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fG, fIntermediate, fChroma, fH);
-    if(fH < orx2F(1.0f / 3.0f))
-    {
-      orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fB, fIntermediate, fChroma, (fH + orx2F(2.0f / 3.0f)));
-    }
-    else
-    {
-      orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fB, fIntermediate, fChroma, (fH - orx2F(1.0f / 3.0f)));
+    if (fH < orx2F(1.0f / 3.0f)) {
+      orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fB, fIntermediate, fChroma,
+                                 (fH + orx2F(2.0f / 3.0f)));
+    } else {
+      orxCOLOR_GET_RGB_COMPONENT(pstResult->vRGB.fB, fIntermediate, fChroma,
+                                 (fH - orx2F(1.0f / 3.0f)));
     }
   }
 
@@ -694,10 +644,10 @@ while(orxFALSE)
  * @param[in]   _pstSrc         Source color
  * @return      orxCOLOR
  */
-static orxCOLOR *orxFASTCALL      orxColor_FromRGBToHSV(orxCOLOR *_pstDst, const orxCOLOR *_pstSrc)
-{
+static orxCOLOR *orxFASTCALL orxColor_FromRGBToHSV(orxCOLOR *_pstDst,
+                                                   const orxCOLOR *_pstSrc) {
   orxCOLOR *pstResult = _pstDst;
-  orxFLOAT  fMin, fMax, fDelta, fR, fG, fB;
+  orxFLOAT fMin, fMax, fDelta, fR, fG, fB;
 
   /* Checks */
   orxASSERT(_pstDst != orxNULL);
@@ -709,50 +659,43 @@ static orxCOLOR *orxFASTCALL      orxColor_FromRGBToHSV(orxCOLOR *_pstDst, const
   fB = _pstSrc->vRGB.fB;
 
   /* Gets min, max & delta values */
-  fMin    = orxMIN(fR, orxMIN(fG, fB));
-  fMax    = orxMAX(fR, orxMAX(fG, fB));
-  fDelta  = fMax - fMin;
+  fMin = orxMIN(fR, orxMIN(fG, fB));
+  fMax = orxMAX(fR, orxMAX(fG, fB));
+  fDelta = fMax - fMin;
 
   /* Stores value */
   pstResult->vHSL.fV = fMax;
 
   /* Gray? */
-  if(fDelta == orxFLOAT_0)
-  {
+  if (fDelta == orxFLOAT_0) {
     /* Gets hue & saturation */
     pstResult->vHSL.fH = pstResult->vHSL.fS = orxFLOAT_0;
-  }
-  else
-  {
+  } else {
     /* Updates saturation */
     pstResult->vHSL.fS = fDelta / fMax;
 
     /* Red tone? */
-    if(fR == fMax)
-    {
+    if (fR == fMax) {
       /* Updates hue */
       pstResult->vHSL.fH = orx2F(1.0f / 6.0f) * (fG - fB) / fDelta;
     }
     /* Green tone? */
-    else if(fG == fMax)
-    {
+    else if (fG == fMax) {
       /* Updates hue */
-      pstResult->vHSL.fH = orx2F(1.0f / 3.0f) + (orx2F(1.0f / 6.0f) * (fB - fR) / fDelta);
+      pstResult->vHSL.fH =
+          orx2F(1.0f / 3.0f) + (orx2F(1.0f / 6.0f) * (fB - fR) / fDelta);
     }
     /* Blue tone */
-    else
-    {
+    else {
       /* Updates hue */
-      pstResult->vHSL.fH = orx2F(2.0f / 3.0f) + (orx2F(1.0f / 6.0f) * (fR - fG) / fDelta);
+      pstResult->vHSL.fH =
+          orx2F(2.0f / 3.0f) + (orx2F(1.0f / 6.0f) * (fR - fG) / fDelta);
     }
 
     /* Clamps hue */
-    if(pstResult->vHSL.fH < orxFLOAT_0)
-    {
+    if (pstResult->vHSL.fH < orxFLOAT_0) {
       pstResult->vHSL.fH += orxFLOAT_1;
-    }
-    else if(pstResult->vHSL.fH > orxFLOAT_1)
-    {
+    } else if (pstResult->vHSL.fH > orxFLOAT_1) {
       pstResult->vHSL.fH -= orxFLOAT_1;
     }
   }
@@ -769,10 +712,10 @@ static orxCOLOR *orxFASTCALL      orxColor_FromRGBToHSV(orxCOLOR *_pstDst, const
  * @param[in]   _pstSrc         Source color
  * @return      orxCOLOR
  */
-static orxCOLOR *orxFASTCALL      orxColor_FromHSVToRGB(orxCOLOR *_pstDst, const orxCOLOR *_pstSrc)
-{
+static orxCOLOR *orxFASTCALL orxColor_FromHSVToRGB(orxCOLOR *_pstDst,
+                                                   const orxCOLOR *_pstSrc) {
   orxCOLOR *pstResult = _pstDst;
-  orxFLOAT  fH, fS, fV;
+  orxFLOAT fH, fS, fV;
 
   /* Checks */
   orxASSERT(_pstDst != orxNULL);
@@ -784,85 +727,78 @@ static orxCOLOR *orxFASTCALL      orxColor_FromHSVToRGB(orxCOLOR *_pstDst, const
   fV = _pstSrc->vRGB.fV;
 
   /* Gray? */
-  if(fS == orxFLOAT_0)
-  {
+  if (fS == orxFLOAT_0) {
     /* Updates result */
     orxVector_SetAll(&(pstResult->vRGB), fV);
-  }
-  else
-  {
+  } else {
     orxFLOAT fFullHue, fSector, fIntermediate;
 
     /* Gets intermediate value */
     fIntermediate = fV * fS;
 
     /* Gets full hue & sector */
-    fFullHue  = orx2F(6.0f) * fH;
-    fSector   = orxMath_Floor(fFullHue);
+    fFullHue = orx2F(6.0f) * fH;
+    fSector = orxMath_Floor(fFullHue);
 
     /* Depending on sector */
-    switch(orxF2U(fSector))
-    {
-      default:
-      case 0:
-      {
-        /* Updates RGB components */
-        pstResult->vRGB.fR = fV;
-        pstResult->vRGB.fG = fV - (fIntermediate - (fIntermediate * (fFullHue - fSector)));
-        pstResult->vRGB.fB = fV - fIntermediate;
+    switch (orxF2U(fSector)) {
+    default:
+    case 0: {
+      /* Updates RGB components */
+      pstResult->vRGB.fR = fV;
+      pstResult->vRGB.fG =
+          fV - (fIntermediate - (fIntermediate * (fFullHue - fSector)));
+      pstResult->vRGB.fB = fV - fIntermediate;
 
-        break;
-      }
+      break;
+    }
 
-      case 1:
-      {
-        /* Updates RGB components */
-        pstResult->vRGB.fR = fV - (fIntermediate * (fFullHue - fSector));
-        pstResult->vRGB.fG = fV;
-        pstResult->vRGB.fB = fV - fIntermediate;
+    case 1: {
+      /* Updates RGB components */
+      pstResult->vRGB.fR = fV - (fIntermediate * (fFullHue - fSector));
+      pstResult->vRGB.fG = fV;
+      pstResult->vRGB.fB = fV - fIntermediate;
 
-        break;
-      }
+      break;
+    }
 
-      case 2:
-      {
-        /* Updates RGB components */
-        pstResult->vRGB.fR = fV - fIntermediate;
-        pstResult->vRGB.fG = fV;
-        pstResult->vRGB.fB = fV - (fIntermediate - (fIntermediate * (fFullHue - fSector)));
+    case 2: {
+      /* Updates RGB components */
+      pstResult->vRGB.fR = fV - fIntermediate;
+      pstResult->vRGB.fG = fV;
+      pstResult->vRGB.fB =
+          fV - (fIntermediate - (fIntermediate * (fFullHue - fSector)));
 
-        break;
-      }
+      break;
+    }
 
-      case 3:
-      {
-        /* Updates RGB components */
-        pstResult->vRGB.fR = fV - fIntermediate;
-        pstResult->vRGB.fG = fV - (fIntermediate * (fFullHue - fSector));
-        pstResult->vRGB.fB = fV;
+    case 3: {
+      /* Updates RGB components */
+      pstResult->vRGB.fR = fV - fIntermediate;
+      pstResult->vRGB.fG = fV - (fIntermediate * (fFullHue - fSector));
+      pstResult->vRGB.fB = fV;
 
-        break;
-      }
+      break;
+    }
 
-      case 4:
-      {
-        /* Updates RGB components */
-        pstResult->vRGB.fR = fV - (fIntermediate - (fIntermediate * (fFullHue - fSector)));
-        pstResult->vRGB.fG = fV - fIntermediate;
-        pstResult->vRGB.fB = fV;
+    case 4: {
+      /* Updates RGB components */
+      pstResult->vRGB.fR =
+          fV - (fIntermediate - (fIntermediate * (fFullHue - fSector)));
+      pstResult->vRGB.fG = fV - fIntermediate;
+      pstResult->vRGB.fB = fV;
 
-        break;
-      }
+      break;
+    }
 
-      case 5:
-      {
-        /* Updates RGB components */
-        pstResult->vRGB.fR = fV;
-        pstResult->vRGB.fG = fV - fIntermediate;
-        pstResult->vRGB.fB = fV - (fIntermediate * (fFullHue - fSector));
+    case 5: {
+      /* Updates RGB components */
+      pstResult->vRGB.fR = fV;
+      pstResult->vRGB.fG = fV - fIntermediate;
+      pstResult->vRGB.fB = fV - (fIntermediate * (fFullHue - fSector));
 
-        break;
-      }
+      break;
+    }
     }
   }
 
@@ -877,8 +813,8 @@ static orxCOLOR *orxFASTCALL      orxColor_FromHSVToRGB(orxCOLOR *_pstDst, const
  * @param[in]    _zBlendMode                          String to evaluate
  * @return orxDISPLAY_BLEND_MODE
  */
-extern orxDLLAPI orxDISPLAY_BLEND_MODE orxFASTCALL    orxDisplay_GetBlendModeFromString(const orxSTRING _zBlendMode);
-
+extern orxDLLAPI orxDISPLAY_BLEND_MODE orxFASTCALL
+orxDisplay_GetBlendModeFromString(const orxSTRING _zBlendMode);
 
 /***************************************************************************
  * Functions extended by plugins
@@ -887,113 +823,140 @@ extern orxDLLAPI orxDISPLAY_BLEND_MODE orxFASTCALL    orxDisplay_GetBlendModeFro
 /** Inits the display module
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_Init();
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_Init();
 
 /** Exits from the display module
  */
-extern orxDLLAPI void orxFASTCALL                     orxDisplay_Exit();
-
+extern orxDLLAPI void orxFASTCALL orxDisplay_Exit();
 
 /** Swaps/flips bufers (display on screen the current frame)
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_Swap();
-
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_Swap();
 
 /** Gets screen bitmap
  * @return orxBITMAP / orxNULL
  */
-extern orxDLLAPI orxBITMAP *orxFASTCALL               orxDisplay_GetScreenBitmap();
+extern orxDLLAPI orxBITMAP *orxFASTCALL orxDisplay_GetScreenBitmap();
 
 /** Gets screen size
  * @param[out]   _pfWidth                             Screen width
  * @param[out]   _pfHeight                            Screen height
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_GetScreenSize(orxFLOAT *_pfWidth, orxFLOAT *_pfHeight);
-
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_GetScreenSize(orxFLOAT *_pfWidth, orxFLOAT *_pfHeight);
 
 /** Creates a bitmap
  * @param[in]   _u32Width                             Bitmap width
  * @param[in]   _u32Height                            Bitmap height
  * @return orxBITMAP / orxNULL
  */
-extern orxDLLAPI orxBITMAP *orxFASTCALL               orxDisplay_CreateBitmap(orxU32 _u32Width, orxU32 _u32Height);
+extern orxDLLAPI orxBITMAP *orxFASTCALL
+orxDisplay_CreateBitmap(orxU32 _u32Width, orxU32 _u32Height);
 
 /** Deletes a bitmap
  * @param[in]   _pstBitmap                            Concerned bitmap
  */
-extern orxDLLAPI void orxFASTCALL                     orxDisplay_DeleteBitmap(orxBITMAP *_pstBitmap);
+extern orxDLLAPI void orxFASTCALL
+orxDisplay_DeleteBitmap(orxBITMAP *_pstBitmap);
 
-
-/** Loads a bitmap from file (an event of ID orxDISPLAY_EVENT_BITMAP_LOAD will be sent upon completion, whether the loading is asynchronous or not)
+/** Loads a bitmap from file (an event of ID orxDISPLAY_EVENT_BITMAP_LOAD will
+ * be sent upon completion, whether the loading is asynchronous or not)
  * @param[in]   _zFileName                            Name of the file to load
  * @return orxBITMAP / orxNULL
  */
-extern orxDLLAPI orxBITMAP *orxFASTCALL               orxDisplay_LoadBitmap(const orxSTRING _zFileName);
+extern orxDLLAPI orxBITMAP *orxFASTCALL
+orxDisplay_LoadBitmap(const orxSTRING _zFileName);
 
 /** Saves a bitmap to file
  * @param[in]   _pstBitmap                            Concerned bitmap
- * @param[in]   _zFileName                            Name of the file where to store the bitmap
+ * @param[in]   _zFileName                            Name of the file where to
+ * store the bitmap
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SaveBitmap(const orxBITMAP *_pstBitmap, const orxSTRING _zFileName);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_SaveBitmap(const orxBITMAP *_pstBitmap, const orxSTRING _zFileName);
 
-
-/** Loads a font from a TrueType/OpenType file (an event of ID orxDISPLAY_EVENT_BITMAP_LOAD will be sent upon completion, whether the loading is asynchronous or not)
+/** Loads a font from a TrueType/OpenType file (an event of ID
+ * orxDISPLAY_EVENT_BITMAP_LOAD will be sent upon completion, whether the
+ * loading is asynchronous or not)
  * @param[in]   _zFileName                            Name of the file to load
- * @param[in]   _zCharacterList                       Ordered list of characters for which to create glyphs
- * @param[in]   _pvCharacterSize                      Size of characters, X = 0 for variable width
- * @param[in]   _pvCharacterSpacing                   Spacing to be kept between glyphs in the font bitmap
- * @param[in]   _pvCharacterPadding                   Padding added on all sides, inside a glyph
- * @param[in]   _bSDF                                 Will generate a SDF (Signed Distance Field) texture if set to true or a regular texture otherwise
- * @param[out]  _afCharacterWidthList                 Resulting list of character/glyph widths
+ * @param[in]   _zCharacterList                       Ordered list of characters
+ * for which to create glyphs
+ * @param[in]   _pvCharacterSize                      Size of characters, X = 0
+ * for variable width
+ * @param[in]   _pvCharacterSpacing                   Spacing to be kept between
+ * glyphs in the font bitmap
+ * @param[in]   _pvCharacterPadding                   Padding added on all
+ * sides, inside a glyph
+ * @param[in]   _bSDF                                 Will generate a SDF
+ * (Signed Distance Field) texture if set to true or a regular texture otherwise
+ * @param[out]  _afCharacterWidthList                 Resulting list of
+ * character/glyph widths
  * @return orxBITMAP / orxNULL
  */
-extern orxDLLAPI orxBITMAP *orxFASTCALL               orxDisplay_LoadFont(const orxSTRING _zFileName, const orxSTRING _zCharacterList, const orxVECTOR *_pvCharacterSize, const orxVECTOR *_pvCharacterSpacing, const orxVECTOR *_pvCharacterPadding, orxBOOL _bSDF, orxFLOAT *_afCharacterWidthList);
+extern orxDLLAPI orxBITMAP *orxFASTCALL orxDisplay_LoadFont(
+    const orxSTRING _zFileName, const orxSTRING _zCharacterList,
+    const orxVECTOR *_pvCharacterSize, const orxVECTOR *_pvCharacterSpacing,
+    const orxVECTOR *_pvCharacterPadding, orxBOOL _bSDF,
+    orxFLOAT *_afCharacterWidthList);
 
-
-/** Sets temp bitmap, if a valid temp bitmap is given, load operations will be asynchronous
- * @param[in]   _pstBitmap                            Concerned bitmap, orxNULL for forcing synchronous load operations
+/** Sets temp bitmap, if a valid temp bitmap is given, load operations will be
+ * asynchronous
+ * @param[in]   _pstBitmap                            Concerned bitmap, orxNULL
+ * for forcing synchronous load operations
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetTempBitmap(const orxBITMAP *_pstBitmap);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_SetTempBitmap(const orxBITMAP *_pstBitmap);
 
 /** Gets current temp bitmap
- * @return orxBITMAP, if non-null, load operations are currently asynchronous, otherwise they're synchronous
+ * @return orxBITMAP, if non-null, load operations are currently asynchronous,
+ * otherwise they're synchronous
  */
-extern orxDLLAPI const orxBITMAP *orxFASTCALL         orxDisplay_GetTempBitmap();
-
+extern orxDLLAPI const orxBITMAP *orxFASTCALL orxDisplay_GetTempBitmap();
 
 /** Sets destination bitmaps
  * @param[in]   _apstBitmapList                       Destination bitmap list
- * @param[in]   _u32Number                            Number of destination bitmaps
+ * @param[in]   _u32Number                            Number of destination
+ * bitmaps
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetDestinationBitmaps(orxBITMAP **_apstBitmapList, orxU32 _u32Number);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_SetDestinationBitmaps(
+    orxBITMAP **_apstBitmapList, orxU32 _u32Number);
 
 /** Clears a bitmap
- * @param[in]   _pstBitmap                            Concerned bitmap, if orxNULL all the current destination bitmaps will be cleared instead
- * @param[in]   _stColor                              Color to clear the bitmap with
+ * @param[in]   _pstBitmap                            Concerned bitmap, if
+ * orxNULL all the current destination bitmaps will be cleared instead
+ * @param[in]   _stColor                              Color to clear the bitmap
+ * with
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_ClearBitmap(orxBITMAP *_pstBitmap, orxRGBA _stColor);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_ClearBitmap(orxBITMAP *_pstBitmap, orxRGBA _stColor);
 
 /** Sets current blend mode
  * @param[in]   _eBlendMode                           Blend mode to set
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode);
 
 /** Sets a bitmap clipping for blitting (both as source and destination)
- * @param[in]   _pstBitmap                            Concerned bitmap, orxNULL to target the first destination bitmap
+ * @param[in]   _pstBitmap                            Concerned bitmap, orxNULL
+ * to target the first destination bitmap
  * @param[in]   _u32TLX                               Top left X coord in pixels
  * @param[in]   _u32TLY                               Top left Y coord in pixels
- * @param[in]   _u32BRX                               Bottom right X coord in pixels
- * @param[in]   _u32BRY                               Bottom right Y coord in pixels
+ * @param[in]   _u32BRX                               Bottom right X coord in
+ * pixels
+ * @param[in]   _u32BRY                               Bottom right Y coord in
+ * pixels
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetBitmapClipping(orxBITMAP *_pstBitmap, orxU32 _u32TLX, orxU32 _u32TLY, orxU32 _u32BRX, orxU32 _u32BRY);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_SetBitmapClipping(orxBITMAP *_pstBitmap, orxU32 _u32TLX,
+                             orxU32 _u32TLY, orxU32 _u32BRX, orxU32 _u32BRY);
 
 /** Sets a bitmap data (RGBA memory format)
  * @param[in]   _pstBitmap                            Concerned bitmap
@@ -1001,26 +964,36 @@ extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetBitmapClippi
  * @param[in]   _u32ByteNumber                        Number of bytes
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetBitmapData(orxBITMAP *_pstBitmap, const orxU8 *_au8Data, orxU32 _u32ByteNumber);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_SetBitmapData(
+    orxBITMAP *_pstBitmap, const orxU8 *_au8Data, orxU32 _u32ByteNumber);
 
 /** Gets a bitmap data (RGBA memory format)
  * @param[in]   _pstBitmap                            Concerned bitmap
- * @param[in]   _au8Data                              Output buffer (4 channels, RGBA)
- * @param[in]   _u32ByteNumber                        Number of bytes of the buffer
+ * @param[in]   _au8Data                              Output buffer (4 channels,
+ * RGBA)
+ * @param[in]   _u32ByteNumber                        Number of bytes of the
+ * buffer
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_GetBitmapData(const orxBITMAP *_pstBitmap, orxU8 *_au8Data, orxU32 _u32ByteNumber);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_GetBitmapData(
+    const orxBITMAP *_pstBitmap, orxU8 *_au8Data, orxU32 _u32ByteNumber);
 
 /** Sets a partial (rectangle) bitmap data (RGBA memory format)
  * @param[in]   _pstBitmap                            Concerned bitmap
  * @param[in]   _au8Data                              Data (4 channels, RGBA)
- * @param[in]   _u32X                                 Origin's X coord of the rectangle area to set
- * @param[in]   _u32Y                                 Origin's Y coord of the rectangle area to set
- * @param[in]   _u32Width                             Width of the rectangle area to set
- * @param[in]   _u32Height                            Height of the rectangle area to set
+ * @param[in]   _u32X                                 Origin's X coord of the
+ * rectangle area to set
+ * @param[in]   _u32Y                                 Origin's Y coord of the
+ * rectangle area to set
+ * @param[in]   _u32Width                             Width of the rectangle
+ * area to set
+ * @param[in]   _u32Height                            Height of the rectangle
+ * area to set
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetPartialBitmapData(orxBITMAP *_pstBitmap, const orxU8 *_au8Data, orxU32 _u32X, orxU32 _u32Y, orxU32 _u32Width, orxU32 _u32Height);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_SetPartialBitmapData(
+    orxBITMAP *_pstBitmap, const orxU8 *_au8Data, orxU32 _u32X, orxU32 _u32Y,
+    orxU32 _u32Width, orxU32 _u32Height);
 
 /** Gets a bitmap size
  * @param[in]   _pstBitmap                            Concerned bitmap
@@ -1028,37 +1001,47 @@ extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetPartialBitma
  * @param[out]  _pfHeight                             Bitmap height
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_GetBitmapSize(const orxBITMAP *_pstBitmap, orxFLOAT *_pfWidth, orxFLOAT *_pfHeight);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_GetBitmapSize(
+    const orxBITMAP *_pstBitmap, orxFLOAT *_pfWidth, orxFLOAT *_pfHeight);
 
 /** Gets a bitmap (internal) ID
  * @param[in]   _pstBitmap                            Concerned bitmap
  * @return orxU32
  */
-extern orxDLLAPI orxU32 orxFASTCALL                   orxDisplay_GetBitmapID(const orxBITMAP *_pstBitmap);
-
+extern orxDLLAPI orxU32 orxFASTCALL
+orxDisplay_GetBitmapID(const orxBITMAP *_pstBitmap);
 
 /** Transforms (and blits onto another) a bitmap
- * @param[in]   _pstSrc                               Bitmap to transform and draw
- * @param[in]   _pstTransform                         Transformation info (position, scale, rotation, ...)
+ * @param[in]   _pstSrc                               Bitmap to transform and
+ * draw
+ * @param[in]   _pstTransform                         Transformation info
+ * (position, scale, rotation, ...)
  * @param[in]   _stColor                              Color
  * @param[in]   _eSmoothing                           Bitmap smoothing type
  * @param[in]   _eBlendMode                           Blend mode
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_TransformBitmap(const orxBITMAP *_pstSrc, const orxDISPLAY_TRANSFORM *_pstTransform, orxRGBA _stColor, orxDISPLAY_SMOOTHING _eSmoothing, orxDISPLAY_BLEND_MODE _eBlendMode);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_TransformBitmap(
+    const orxBITMAP *_pstSrc, const orxDISPLAY_TRANSFORM *_pstTransform,
+    orxRGBA _stColor, orxDISPLAY_SMOOTHING _eSmoothing,
+    orxDISPLAY_BLEND_MODE _eBlendMode);
 
 /** Transforms a text (onto a bitmap)
  * @param[in]   _zString                              String to display
  * @param[in]   _pstFont                              Font bitmap
  * @param[in]   _pstMap                               Character map
- * @param[in]   _pstTransform                         Transformation info (position, scale, rotation, ...)
+ * @param[in]   _pstTransform                         Transformation info
+ * (position, scale, rotation, ...)
  * @param[in]   _stColor                              Color
  * @param[in]   _eSmoothing                           Bitmap smoothing type
  * @param[in]   _eBlendMode                           Blend mode
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_TransformText(const orxSTRING _zString, const orxBITMAP *_pstFont, const orxCHARACTER_MAP *_pstMap, const orxDISPLAY_TRANSFORM *_pstTransform, orxRGBA _stColor, orxDISPLAY_SMOOTHING _eSmoothing, orxDISPLAY_BLEND_MODE _eBlendMode);
-
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_TransformText(
+    const orxSTRING _zString, const orxBITMAP *_pstFont,
+    const orxCHARACTER_MAP *_pstMap, const orxDISPLAY_TRANSFORM *_pstTransform,
+    orxRGBA _stColor, orxDISPLAY_SMOOTHING _eSmoothing,
+    orxDISPLAY_BLEND_MODE _eBlendMode);
 
 /** Draws a line
  * @param[in]   _pvStart                              Start point
@@ -1066,170 +1049,213 @@ extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_TransformText(c
  * @param[in]   _stColor                              Color
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_DrawLine(const orxVECTOR *_pvStart, const orxVECTOR *_pvEnd, orxRGBA _stColor);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_DrawLine(
+    const orxVECTOR *_pvStart, const orxVECTOR *_pvEnd, orxRGBA _stColor);
 
 /** Draws a polyline (aka open polygon)
  * @param[in]   _avVertexList                         List of vertices
- * @param[in]   _u32VertexNumber                      Number of vertices in the list
+ * @param[in]   _u32VertexNumber                      Number of vertices in the
+ * list
  * @param[in]   _stColor                              Color
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_DrawPolyline(const orxVECTOR *_avVertexList, orxU32 _u32VertexNumber, orxRGBA _stColor);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_DrawPolyline(
+    const orxVECTOR *_avVertexList, orxU32 _u32VertexNumber, orxRGBA _stColor);
 
-/** Draws a (closed) polygon; filled polygons *need* to be either convex or star-shaped concave with the first vertex part of the polygon's kernel
+/** Draws a (closed) polygon; filled polygons *need* to be either convex or
+ * star-shaped concave with the first vertex part of the polygon's kernel
  * @param[in]   _avVertexList                         List of vertices
- * @param[in]   _u32VertexNumber                      Number of vertices in the list
+ * @param[in]   _u32VertexNumber                      Number of vertices in the
+ * list
  * @param[in]   _stColor                              Color
- * @param[in]   _bFill                                If true, the polygon will be filled otherwise only its outline will be drawn
+ * @param[in]   _bFill                                If true, the polygon will
+ * @param[in]   _eBlendMode                           Blend mode
+ * be filled otherwise only its outline will be drawn
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_DrawPolygon(const orxVECTOR *_avVertexList, orxU32 _u32VertexNumber, orxRGBA _stColor, orxBOOL _bFill);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_DrawPolygon(
+    const orxVECTOR *_avVertexList, orxU32 _u32VertexNumber, orxRGBA _stColor,
+    orxBOOL _bFill, orxDISPLAY_BLEND_MODE _eBlendMode);
 
 /** Draws a circle
  * @param[in]   _pvCenter                             Center
  * @param[in]   _fRadius                              Radius
  * @param[in]   _stColor                              Color
- * @param[in]   _bFill                                If true, the polygon will be filled otherwise only its outline will be drawn
+ * @param[in]   _bFill                                If true, the polygon will
+ * be filled otherwise only its outline will be drawn
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_DrawCircle(const orxVECTOR *_pvCenter, orxFLOAT _fRadius, orxRGBA _stColor, orxBOOL _bFill);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_DrawCircle(const orxVECTOR *_pvCenter, orxFLOAT _fRadius,
+                      orxRGBA _stColor, orxBOOL _bFill);
 
 /** Draws an oriented box
  * @param[in]   _pstBox                               Box to draw
  * @param[in]   _stColor                              Color
- * @param[in]   _bFill                                If true, the polygon will be filled otherwise only its outline will be drawn
+ * @param[in]   _bFill                                If true, the polygon will
+ * be filled otherwise only its outline will be drawn
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_DrawOBox(const orxOBOX *_pstBox, orxRGBA _stColor, orxBOOL _bFill);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_DrawOBox(const orxOBOX *_pstBox, orxRGBA _stColor, orxBOOL _bFill);
 
 /** Draws a textured mesh
- * @param[in]   _pstMesh                              Mesh to draw, if no primitive and no index buffer is given, separate quads arrangement will be assumed
- * @param[in]   _pstBitmap                            Bitmap to use for texturing, orxNULL to use the current one
+ * @param[in]   _pstMesh                              Mesh to draw, if no
+ * primitive and no index buffer is given, separate quads arrangement will be
+ * assumed
+ * @param[in]   _pstBitmap                            Bitmap to use for
+ * texturing, orxNULL to use the current one
  * @param[in]   _eSmoothing                           Bitmap smoothing type
  * @param[in]   _eBlendMode                           Blend mode
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_DrawMesh(const orxDISPLAY_MESH *_pstMesh, const orxBITMAP *_pstBitmap, orxDISPLAY_SMOOTHING _eSmoothing, orxDISPLAY_BLEND_MODE _eBlendMode);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_DrawMesh(
+    const orxDISPLAY_MESH *_pstMesh, const orxBITMAP *_pstBitmap,
+    orxDISPLAY_SMOOTHING _eSmoothing, orxDISPLAY_BLEND_MODE _eBlendMode);
 
 /** Has shader support?
  * @return orxTRUE / orxFALSE
  */
-extern orxDLLAPI orxBOOL orxFASTCALL                  orxDisplay_HasShaderSupport();
+extern orxDLLAPI orxBOOL orxFASTCALL orxDisplay_HasShaderSupport();
 
 /** Creates (compiles) a shader
- * @param[in]   _azCodeList                           List of shader code to compile, in order
- * @param[in]   _u32Size                              Size of the shader code list
- * @param[in]   _pstParamList                         Shader parameters (should be a link list of orxSHADER_PARAM)
- * @param[in]   _bUseCustomParam                      Shader uses custom parameters
- * @return orxHANDLE of the compiled shader is successful, orxHANDLE_UNDEFINED otherwise
+ * @param[in]   _azCodeList                           List of shader code to
+ * compile, in order
+ * @param[in]   _u32Size                              Size of the shader code
+ * list
+ * @param[in]   _pstParamList                         Shader parameters (should
+ * be a link list of orxSHADER_PARAM)
+ * @param[in]   _bUseCustomParam                      Shader uses custom
+ * parameters
+ * @return orxHANDLE of the compiled shader is successful, orxHANDLE_UNDEFINED
+ * otherwise
  */
-extern orxDLLAPI orxHANDLE orxFASTCALL                orxDisplay_CreateShader(const orxSTRING *_azCodeList, orxU32 _u32Size, const orxLINKLIST *_pstParamList, orxBOOL _bUseCustomParam);
+extern orxDLLAPI orxHANDLE orxFASTCALL orxDisplay_CreateShader(
+    const orxSTRING *_azCodeList, orxU32 _u32Size,
+    const orxLINKLIST *_pstParamList, orxBOOL _bUseCustomParam);
 
 /** Deletes a compiled shader
  * @param[in]   _hShader                              Shader to delete
  */
-extern orxDLLAPI void orxFASTCALL                     orxDisplay_DeleteShader(orxHANDLE _hShader);
+extern orxDLLAPI void orxFASTCALL orxDisplay_DeleteShader(orxHANDLE _hShader);
 
 /** Starts a shader rendering
  * @param[in]   _hShader                              Shader to start
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_StartShader(const orxHANDLE _hShader);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_StartShader(const orxHANDLE _hShader);
 
 /** Stops a shader rendering
  * @param[in]   _hShader                              Shader to stop
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_StopShader(const orxHANDLE _hShader);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_StopShader(const orxHANDLE _hShader);
 
 /** Gets a shader parameter's ID
  * @param[in]   _hShader                              Concerned shader
  * @param[in]   _zParam                               Parameter name
- * @param[in]   _s32Index                             Parameter index, -1 for non-array types
+ * @param[in]   _s32Index                             Parameter index, -1 for
+ * non-array types
  * @param[in]   _bIsTexture                           Is parameter a texture?
  * @return Parameter ID
  */
-extern orxDLLAPI orxS32 orxFASTCALL                   orxDisplay_GetParameterID(orxHANDLE _hShader, const orxSTRING _zParam, orxS32 _s32Index, orxBOOL _bIsTexture);
+extern orxDLLAPI orxS32 orxFASTCALL
+orxDisplay_GetParameterID(orxHANDLE _hShader, const orxSTRING _zParam,
+                          orxS32 _s32Index, orxBOOL _bIsTexture);
 
 /** Sets a shader parameter (orxBITMAP)
  * @param[in]   _hShader                              Concerned shader
  * @param[in]   _s32ID                                ID of parameter to set
- * @param[in]   _pstValue                             Value (orxBITMAP) for this parameter
+ * @param[in]   _pstValue                             Value (orxBITMAP) for this
+ * parameter
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetShaderBitmap(orxHANDLE _hShader, orxS32 _s32ID, const orxBITMAP *_pstValue);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_SetShaderBitmap(
+    orxHANDLE _hShader, orxS32 _s32ID, const orxBITMAP *_pstValue);
 
 /** Sets a shader parameter (orxFLOAT)
  * @param[in]   _hShader                              Concerned shader
  * @param[in]   _s32ID                                ID of parameter to set
- * @param[in]   _fValue                               Value (orxFLOAT) for this parameter
+ * @param[in]   _fValue                               Value (orxFLOAT) for this
+ * parameter
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetShaderFloat(orxHANDLE _hShader, orxS32 _s32ID, orxFLOAT _fValue);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_SetShaderFloat(orxHANDLE _hShader, orxS32 _s32ID, orxFLOAT _fValue);
 
 /** Sets a shader parameter (orxVECTOR)
  * @param[in]   _hShader                              Concerned shader
  * @param[in]   _s32ID                                ID of parameter to set
- * @param[in]   _pvValue                              Value (orxVECTOR) for this parameter
+ * @param[in]   _pvValue                              Value (orxVECTOR) for this
+ * parameter
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetShaderVector(orxHANDLE _hShader, orxS32 _s32ID, const orxVECTOR *_pvValue);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_SetShaderVector(
+    orxHANDLE _hShader, orxS32 _s32ID, const orxVECTOR *_pvValue);
 
 /** Gets a shader (internal) ID
  * @param[in]   _hShader                              Concerned bitmap
  * @return orxU32
  */
-extern orxDLLAPI orxU32 orxFASTCALL                   orxDisplay_GetShaderID(const orxHANDLE _hShader);
-
+extern orxDLLAPI orxU32 orxFASTCALL
+orxDisplay_GetShaderID(const orxHANDLE _hShader);
 
 /** Enables / disables vertical synchro
  * @param[in]   _bEnable                              Enable / disable
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_EnableVSync(orxBOOL _bEnable);
+extern orxDLLAPI orxSTATUS orxFASTCALL orxDisplay_EnableVSync(orxBOOL _bEnable);
 
 /** Is vertical synchro enabled?
  * @return orxTRUE if enabled, orxFALSE otherwise
  */
-extern orxDLLAPI orxBOOL orxFASTCALL                  orxDisplay_IsVSyncEnabled();
-
+extern orxDLLAPI orxBOOL orxFASTCALL orxDisplay_IsVSyncEnabled();
 
 /** Sets full screen mode
  * @param[in]   _bFullScreen                          orxTRUE / orxFALSE
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetFullScreen(orxBOOL _bFullScreen);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_SetFullScreen(orxBOOL _bFullScreen);
 
 /** Is in full screen mode?
  * @return orxTRUE if full screen, orxFALSE otherwise
  */
-extern orxDLLAPI orxBOOL orxFASTCALL                  orxDisplay_IsFullScreen();
-
+extern orxDLLAPI orxBOOL orxFASTCALL orxDisplay_IsFullScreen();
 
 /** Gets available video mode count
  * @return Available video mode count
  */
-extern orxDLLAPI orxU32 orxFASTCALL                   orxDisplay_GetVideoModeCount();
+extern orxDLLAPI orxU32 orxFASTCALL orxDisplay_GetVideoModeCount();
 
 /** Gets an available video mode
- * @param[in]   _u32Index                             Video mode index, pass _u32Index < orxDisplay_GetVideoModeCount() for an available listed mode, orxU32_UNDEFINED for the the default (desktop) mode and any other value for current mode
+ * @param[in]   _u32Index                             Video mode index, pass
+ * _u32Index < orxDisplay_GetVideoModeCount() for an available listed mode,
+ * orxU32_UNDEFINED for the the default (desktop) mode and any other value for
+ * current mode
  * @param[out]  _pstVideoMode                         Storage for the video mode
  * @return orxDISPLAY_VIDEO_MODE / orxNULL if invalid
  */
-extern orxDLLAPI orxDISPLAY_VIDEO_MODE *orxFASTCALL   orxDisplay_GetVideoMode(orxU32 _u32Index, orxDISPLAY_VIDEO_MODE *_pstVideoMode);
+extern orxDLLAPI orxDISPLAY_VIDEO_MODE *orxFASTCALL
+orxDisplay_GetVideoMode(orxU32 _u32Index, orxDISPLAY_VIDEO_MODE *_pstVideoMode);
 
 /** Sets a video mode
- * @param[in]  _pstVideoMode                          Video mode to set, if width, height, depth or refresh rate are 0, the monitor's default values will be used instead
+ * @param[in]  _pstVideoMode                          Video mode to set, if
+ * width, height, depth or refresh rate are 0, the monitor's default values will
+ * be used instead
  * @return orxSTATUS_SUCCESS / orxSTATUS_FAILURE
  */
-extern orxDLLAPI orxSTATUS orxFASTCALL                orxDisplay_SetVideoMode(const orxDISPLAY_VIDEO_MODE *_pstVideoMode);
+extern orxDLLAPI orxSTATUS orxFASTCALL
+orxDisplay_SetVideoMode(const orxDISPLAY_VIDEO_MODE *_pstVideoMode);
 
 /** Is video mode available
  * @param[in]  _pstVideoMode                          Video mode to test
  * @return orxTRUE is available, orxFALSE otherwise
  */
-extern orxDLLAPI orxBOOL orxFASTCALL                  orxDisplay_IsVideoModeAvailable(const orxDISPLAY_VIDEO_MODE *_pstVideoMode);
-
+extern orxDLLAPI orxBOOL orxFASTCALL
+orxDisplay_IsVideoModeAvailable(const orxDISPLAY_VIDEO_MODE *_pstVideoMode);
 
 #endif /* _orxDISPLAY_H_ */
 
