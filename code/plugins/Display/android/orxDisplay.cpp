@@ -3548,6 +3548,16 @@ orxDisplay_Android_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode) {
       glASSERT();
       break;
     }
+    case orxDISPLAY_BLEND_MODE_SUB: {
+      glEnable(GL_BLEND);
+      glASSERT();
+      glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+      glASSERT();
+      glBlendFunc(GL_ONE, GL_ONE);
+      glASSERT();
+
+      break;
+    }
     default: {
       glDisable(GL_BLEND);
       glASSERT();

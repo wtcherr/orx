@@ -4591,6 +4591,8 @@ orxDisplay_GLFW_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode) {
     case orxDISPLAY_BLEND_MODE_ALPHA: {
       glEnable(GL_BLEND);
       glASSERT();
+      glBlendEquation(GL_FUNC_ADD);
+      glASSERT();
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glASSERT();
 
@@ -4599,6 +4601,8 @@ orxDisplay_GLFW_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode) {
 
     case orxDISPLAY_BLEND_MODE_MULTIPLY: {
       glEnable(GL_BLEND);
+      glASSERT();
+      glBlendEquation(GL_FUNC_ADD);
       glASSERT();
       glBlendFunc(GL_DST_COLOR, GL_ZERO);
       glASSERT();
@@ -4609,6 +4613,8 @@ orxDisplay_GLFW_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode) {
     case orxDISPLAY_BLEND_MODE_ADD: {
       glEnable(GL_BLEND);
       glASSERT();
+      glBlendEquation(GL_FUNC_ADD);
+      glASSERT();
       glBlendFunc(GL_SRC_ALPHA, GL_ONE);
       glASSERT();
 
@@ -4618,7 +4624,20 @@ orxDisplay_GLFW_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode) {
     case orxDISPLAY_BLEND_MODE_PREMUL: {
       glEnable(GL_BLEND);
       glASSERT();
+      glBlendEquation(GL_FUNC_ADD);
+      glASSERT();
       glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+      glASSERT();
+
+      break;
+    }
+
+    case orxDISPLAY_BLEND_MODE_SUB: {
+      glEnable(GL_BLEND);
+      glASSERT();
+      glBlendEquation(GL_FUNC_REVERSE_SUBTRACT);
+      glASSERT();
+      glBlendFunc(GL_ONE, GL_ONE);
       glASSERT();
 
       break;
