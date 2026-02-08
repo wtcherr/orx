@@ -151,7 +151,7 @@
         "isDefault": false
       },
       "type": "process",
-      "command": "orx",
+      "command": "./orx",
       "options": {
         "cwd": "${workspaceFolder}/code/bin/"
       }

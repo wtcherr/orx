@@ -2767,7 +2767,8 @@ static orxINLINE void orxDisplay_Android_DrawBitmap(
 }
 
 static void orxFASTCALL orxDisplay_Android_DrawPrimitive(
-    orxU32 _u32VertexNumber, orxRGBA _stColor, orxBOOL _bFill, orxBOOL _bOpen) {
+    orxU32 _u32VertexNumber, orxRGBA _stColor, orxBOOL _bFill, orxBOOL _bOpen,
+    orxDISPLAY_BLEND_MODE _eBlendMode) {
   /* Profiles */
   orxPROFILER_PUSH_MARKER("orxDisplay_DrawPrimitive");
 
@@ -2781,23 +2782,30 @@ static void orxFASTCALL orxDisplay_Android_DrawPrimitive(
   orxDisplay_Android_InitShader(sstDisplay.pstNoTextureShader);
 
   /* Has alpha? */
-  if (orxRGBA_A(_stColor) != 0xFF) {
-    /* Enables alpha blending */
-    glEnable(GL_BLEND);
-    glASSERT();
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glASSERT();
-
-    /* Updates blend mode */
-    sstDisplay.eLastBlendMode = orxDISPLAY_BLEND_MODE_ALPHA;
+  if (_eBlendMode != orxDISPLAY_BLEND_MODE_ALPHA ||
+      orxRGBA_A(_stColor) != 0xFF) {
+    orxDisplay_Android_SetBlendMode(_eBlendMode);
   } else {
-    /* Disables alpha blending */
-    glDisable(GL_BLEND);
-    glASSERT();
-
-    /* Updates blend mode */
-    sstDisplay.eLastBlendMode = orxDISPLAY_BLEND_MODE_NONE;
+    orxDisplay_Android_SetBlendMode(orxDISPLAY_BLEND_MODE_NONE);
   }
+  // /* Has alpha? */
+  // if (orxRGBA_A(_stColor) != 0xFF) {
+  //   /* Enables alpha blending */
+  //   glEnable(GL_BLEND);
+  //   glASSERT();
+  //   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  //   glASSERT();
+  //
+  //   /* Updates blend mode */
+  //   sstDisplay.eLastBlendMode = orxDISPLAY_BLEND_MODE_ALPHA;
+  // } else {
+  //   /* Disables alpha blending */
+  //   glDisable(GL_BLEND);
+  //   glASSERT();
+  //
+  //   /* Updates blend mode */
+  //   sstDisplay.eLastBlendMode = orxDISPLAY_BLEND_MODE_NONE;
+  // }
 
   /* Copies vertex buffer */
   glBufferData(GL_ARRAY_BUFFER,
@@ -3055,7 +3063,8 @@ orxSTATUS orxFASTCALL orxDisplay_Android_DrawLine(const orxVECTOR *_pvStart,
       _stColor;
 
   /* Draws it */
-  orxDisplay_Android_DrawPrimitive(2, _stColor, orxFALSE, orxTRUE);
+  orxDisplay_Android_DrawPrimitive(2, _stColor, orxFALSE, orxTRUE,
+                                   orxDISPLAY_BLEND_MODE_ALPHA);
 
   /* Done! */
   return eResult;
@@ -3087,7 +3096,7 @@ orxSTATUS orxFASTCALL orxDisplay_Android_DrawPolyline(
 
   /* Draws it */
   orxDisplay_Android_DrawPrimitive(_u32VertexNumber, _stColor, orxFALSE,
-                                   orxTRUE);
+                                   orxTRUE, orxDISPLAY_BLEND_MODE_ALPHA);
 
   /* Done! */
   return eResult;
@@ -3119,8 +3128,8 @@ orxSTATUS orxFASTCALL orxDisplay_Android_DrawPolygon(
   }
 
   /* Draws it */
-  orxDisplay_Android_DrawPrimitive(_u32VertexNumber, _stColor, _bFill,
-                                   orxFALSE);
+  orxDisplay_Android_DrawPrimitive(_u32VertexNumber, _stColor, _bFill, orxFALSE,
+                                   _eBlendMode);
 
   /* Done! */
   return eResult;
@@ -3158,7 +3167,8 @@ orxSTATUS orxFASTCALL orxDisplay_Android_DrawCircle(const orxVECTOR *_pvCenter,
 
   /* Draws it */
   orxDisplay_Android_DrawPrimitive(orxDISPLAY_KU32_CIRCLE_LINE_NUMBER, _stColor,
-                                   _bFill, orxFALSE);
+                                   _bFill, orxFALSE,
+                                   orxDISPLAY_BLEND_MODE_ALPHA);
 
   /* Done! */
   return eResult;
@@ -3199,7 +3209,8 @@ orxSTATUS orxFASTCALL orxDisplay_Android_DrawOBox(const orxOBOX *_pstBox,
           _stColor;
 
   /* Draws it */
-  orxDisplay_Android_DrawPrimitive(4, _stColor, _bFill, orxFALSE);
+  orxDisplay_Android_DrawPrimitive(4, _stColor, _bFill, orxFALSE,
+                                   orxDISPLAY_BLEND_MODE_ALPHA);
 
   /* Done! */
   return eResult;
@@ -3523,12 +3534,16 @@ orxDisplay_Android_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode) {
     case orxDISPLAY_BLEND_MODE_ALPHA: {
       glEnable(GL_BLEND);
       glASSERT();
+      glBlendEquation(GL_FUNC_ADD);
+      glASSERT();
       glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
       glASSERT();
       break;
     }
     case orxDISPLAY_BLEND_MODE_MULTIPLY: {
       glEnable(GL_BLEND);
+      glASSERT();
+      glBlendEquation(GL_FUNC_ADD);
       glASSERT();
       glBlendFunc(GL_DST_COLOR, GL_ZERO);
       glASSERT();
@@ -3537,12 +3552,16 @@ orxDisplay_Android_SetBlendMode(orxDISPLAY_BLEND_MODE _eBlendMode) {
     case orxDISPLAY_BLEND_MODE_ADD: {
       glEnable(GL_BLEND);
       glASSERT();
+      glBlendEquation(GL_FUNC_ADD);
+      glASSERT();
       glBlendFunc(GL_SRC_ALPHA, GL_ONE);
       glASSERT();
       break;
     }
     case orxDISPLAY_BLEND_MODE_PREMUL: {
       glEnable(GL_BLEND);
+      glASSERT();
+      glBlendEquation(GL_FUNC_ADD);
       glASSERT();
       glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
       glASSERT();
